@@ -1,0 +1,24 @@
+import { JWT_SECRET } from "../lib/config.js";
+import jwt from "jsonwebtoken";
+
+export const protect = (req, res, next) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(401).json({
+      success: false,
+      message: "Not authenticated",
+    });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch {
+    return res.status(401).json({
+      success: false,
+      message: "Invalid token",
+    });
+  }
+};
