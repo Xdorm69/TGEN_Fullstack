@@ -18,3 +18,10 @@ export type TestSchema = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type WrongAnswer = {
+  id: string;
+  question: string;
+  selectedOption: string;
+  correctOption: string;
+};

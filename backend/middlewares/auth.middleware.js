@@ -1,7 +1,10 @@
-import { JWT_SECRET } from "../lib/config.js";
+import config from "../lib/config.js";
 import jwt from "jsonwebtoken";
 
 export const protect = (req, res, next) => {
+  console.log("Cookies:", req.cookies);
+  console.log("Auth header:", req.headers.cookie);
+
   const token = req.cookies.token;
 
   if (!token) {
@@ -12,7 +15,7 @@ export const protect = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, config.JWT_SECRET);
     req.user = decoded;
     next();
   } catch {
@@ -22,3 +25,4 @@ export const protect = (req, res, next) => {
     });
   }
 };
+
