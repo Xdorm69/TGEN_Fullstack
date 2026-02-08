@@ -82,7 +82,7 @@ export function TestStatsPage({
             {wrongAnswers.map((wa, index) => (
               <div
                 key={`${wa.question}-${index}`}
-                className="rounded-lg border border-red-200 bg-red-50 p-4 text-black"
+                className="rounded-lg border border-red-200 bg-gray-100 p-4 text-black"
               >
                 <p className="font-medium mb-3">
                   <span className="text-red-600">Q.</span> {wa.question}

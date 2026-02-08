@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "sonner";
 import { AuthProvider } from "@/context/auth-context";
+import { QueryClientProviderWrapper } from "@/components/wrappers/QueryClientProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -31,9 +32,11 @@ export default function RootLayout({
         className={`${inter.variable} ${geistMono.variable} antialiased dark`}
       >
         <AuthProvider>
-          <Navbar />
-          <div className="mt-16" />
-          {children}
+          <QueryClientProviderWrapper>
+              <Navbar />
+            <div className="mt-16" />
+            {children}
+          </QueryClientProviderWrapper>
         </AuthProvider>
         <Toaster />
       </body>

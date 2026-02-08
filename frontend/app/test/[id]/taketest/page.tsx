@@ -1,26 +1,54 @@
+
+"use client";
 import MaxWidthWrapper from "@/components/wrappers/MaxWidthWrapper";
 import TakeTestClient from "./_components/TakeTestClient";
 import { FetchHandler } from "@/utils/fetch";
-import { handleApiResponse } from "@/utils/api";
+import { use } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
-const TakeTestPage = async ({
+const TakeTestPage = ({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) => {
-  const id = params.id;
 
-  const res = await FetchHandler.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/tests/${id}/taketest`
-  );
+  const id = use(params).id;
+  const router = useRouter();
+  const {data, isLoading, error} = useQuery({
+    queryKey: ["test", id],
+    queryFn: async () => {
+      const res = await FetchHandler.get(
+      `/api/v1/tests/${id}/taketest`
+    );
 
-  const data = handleApiResponse(res);
+    if (res.status === 401) {
+      router.push("/login");
+    }
 
-  const test = data[0].test;
+    if (!res.success) {
+      throw new Error(res.message);
+    }
+
+    return res.data;
+    },
+  });
+
+  if (isLoading) {
+    return <div>Loading</div>
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>
+  }
+
+  if (!data || !data.length) {
+    return <div>No data available</div>
+  }
 
   return (
     <MaxWidthWrapper>
-      <TakeTestClient test={test} startTime={new Date()} />
+      <TakeTestClient test={data[0]} startTime={new Date()} />
     </MaxWidthWrapper>
   );
 };

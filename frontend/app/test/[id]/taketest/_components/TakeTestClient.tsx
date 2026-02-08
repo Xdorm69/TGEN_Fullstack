@@ -86,7 +86,7 @@ export default function TakeTestClient({ test, startTime }: Props) {
       const timeTaken = (Date.now() - startTime.getTime()) / 1000;
 
       const res = await FetchHandler.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/tests/${test._id}/submit`,
+        `/api/v1/tests/${test._id}/submit`,
         {
           answers,
           timeTaken,

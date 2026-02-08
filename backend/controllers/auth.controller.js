@@ -2,6 +2,7 @@ import { signToken } from "../utils/jwt.js";
 import bcrypt from "bcrypt";
 import userModel from "../models/user.model.js";
 import { signupSchema } from "../lib/validations/user.validation.js";
+import config from "../lib/config.js";
 
 export const loginUser = async (req, res) => {
   try {
@@ -44,8 +45,8 @@ export const loginUser = async (req, res) => {
     // Set cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,       // localhost only
-      sameSite: "none",    // REQUIRED for fetch()
+      secure: config.NODE_ENV === "production",       // localhost only
+      sameSite: "lax",    // REQUIRED for fetch()
       path: "/",           // important
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });

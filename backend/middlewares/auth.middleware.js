@@ -2,8 +2,6 @@ import config from "../lib/config.js";
 import jwt from "jsonwebtoken";
 
 export const protect = (req, res, next) => {
-  console.log("Cookies:", req.cookies);
-  console.log("Auth header:", req.headers.cookie);
 
   const token = req.cookies.token;
 
